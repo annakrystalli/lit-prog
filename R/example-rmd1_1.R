@@ -1,12 +1,13 @@
 ## ----analysis-setup------------------------------------------------------
 library(datasets)
 library(ggplot2)
+library(knitr)
 
 ## ----plot-data-----------------------------------------------------------
 ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
 
 
-## ----model, echo=FALSE---------------------------------------------------
+## ----model---------------------------------------------------------------
 set.seed(20)
 irisCluster <- kmeans(iris[, 3:4], 3, nstart = 20)
 

@@ -32,6 +32,7 @@ These two steps are repeated till the within cluster variation cannot be reduced
 ```{r analysis-setup}
 library(datasets)
 library(ggplot2)
+
 ```
 
 
@@ -52,7 +53,7 @@ ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
 
 
 ## Fit kmeans model
-```{r model, echo=FALSE}
+```{r model}
 set.seed(20)
 irisCluster <- kmeans(iris[, 3:4], 3, nstart = 20)
 ```
