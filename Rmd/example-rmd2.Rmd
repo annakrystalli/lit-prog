@@ -1,0 +1,80 @@
+---
+title: "example-rmd1"
+author: "Anna Krystalli"
+date: "06/06/2017"
+output: html_document
+---
+# All-in-one `.Rdm` example
+
+In this example I keep all the annotation in this `.Rmd` document but I will source all the workflow code from the `example-rmd1_1.R` script I extracted from `example-rmd1.Rmd`. I'm using `example-rmd1_1.R` because we extracted a level of documentation that included the chunk names.
+
+#### The difference from the previous approach is that I need to **READ THE R CHUNKS** using `read_chunk()` from the `.R` script and then effectively call them in my `.Rmd`
+
+```{r rmd-setup, include=FALSE, purl=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(knitr)
+read_chunk("../R/example-rmd1_1.R")
+```
+
+
+***
+
+## Analysis description:
+
+For the purposes of this talk I've sourced this example from: https://datascienceplus.com/k-means-clustering-in-r/ and using the `iris` dataset to demo the workflow. 
+
+####  Background: What is K Means Clustering?
+
+**K Means Clustering** is an unsupervised learning algorithm that tries to cluster data based on their similarity. Unsupervised learning means that there is no outcome to be predicted, and the algorithm just tries to find patterns in the data. In k means clustering, we have to specify the number of clusters we want the data to be grouped into. The algorithm randomly assigns each observation to a cluster, and finds the centroid of each cluster. Then, the algorithm iterates through two steps:
+Reassign data points to the cluster whose centroid is closest.
+Calculate new centroid of each cluster.
+
+These two steps are repeated till the within cluster variation cannot be reduced any further. The within cluster variation is calculated as the sum of the euclidean distance between the data points and their respective cluster centroids.
+
+## Analysis setup
+```{r analysis-setup}
+
+```
+
+
+## Explore the data
+
+In `example-rmd1.Rmd` I'd set this to `purl=FALSE` so it was not extracted into the `.R` script. So if I want it in this `.Rmd` as well, I need to include the actual code (ie there is no `data-explore` imported chunk to call)
+
+```{r data-explore, purl=FALSE}
+head(iris)
+summary(iris)
+```
+
+
+```{r plot-data}
+
+```
+
+
+
+## Fit kmeans model
+```{r model}
+
+```
+
+### explore results
+
+```{r, purl=FALSE}
+irisCluster
+```
+
+
+```{r results-table}
+
+```
+
+### Plot results
+
+```{r results-plot}
+
+```
+
