@@ -11,8 +11,6 @@ for(docu in 0:2){
                 documentation = docu)
 }
 
-
-
 ## ---- render-rmd ----
 file <- "presentation"
 render(input = paste0("Rmd/", file, ".Rmd"),
