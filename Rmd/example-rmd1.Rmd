@@ -1,0 +1,58 @@
+---
+title: "example-rmd1"
+author: "Anna Krystalli"
+date: "06/06/2017"
+output: html_document
+---
+# All-in-one `.Rdm` example
+
+In this example I keep all the code and annotation in this `.Rmd` document. To extract the analysis workflow code into an `.R` script, I'm going to use function `knitr::purl()`.
+
+Some of the code chunks are useful in the context of this document but I don't really want to export them to the `.R` as part of the workflow. I indicate these chunks by using chunk option `purl = FALSE`.
+
+```{r rmd-setup, include=FALSE, purl=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+
+## Analysis setup
+```{r analysis-setup}
+library(datasets)
+library(ggplot2)
+```
+
+
+## Explore the data
+
+Here's some basic data exploration which I keep in this report but don't want to extract to the 
+```{r data-explore, purl=FALSE}
+head(iris)
+summary(iris)
+```
+
+
+```{r plot-data}
+ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
+
+```
+
+
+
+## Fit kmeans model
+```{r model, echo=FALSE}
+set.seed(20)
+irisCluster <- kmeans(iris[, 3:4], 3, nstart = 20)
+```
+
+### explore results
+
+```{r, purl=FALSE}
+irisCluster
+```
+
+
+```{r}
+table(irisCluster$cluster, iris$Species)
+```
+
