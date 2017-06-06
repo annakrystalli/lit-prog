@@ -13,6 +13,18 @@
 #' 
 #' ***
 #' 
+#' ## Analysis description:
+#' 
+#' For the purposes of this talk I've sourced this example from: https://datascienceplus.com/k-means-clustering-in-r/ and using the `iris` dataset to demo the workflow. 
+#' 
+#' ####  Background: What is K Means Clustering?
+#' 
+#' **K Means Clustering** is an unsupervised learning algorithm that tries to cluster data based on their similarity. Unsupervised learning means that there is no outcome to be predicted, and the algorithm just tries to find patterns in the data. In k means clustering, we have to specify the number of clusters we want the data to be grouped into. The algorithm randomly assigns each observation to a cluster, and finds the centroid of each cluster. Then, the algorithm iterates through two steps:
+#' Reassign data points to the cluster whose centroid is closest.
+#' Calculate new centroid of each cluster.
+#' 
+#' These two steps are repeated till the within cluster variation cannot be reduced any further. The within cluster variation is calculated as the sum of the euclidean distance between the data points and their respective cluster centroids.
+#' 
 #' ## Analysis setup
 ## ----analysis-setup------------------------------------------------------
 library(datasets)
@@ -22,7 +34,7 @@ library(ggplot2)
 #' 
 #' ## Explore the data
 #' 
-#' Here's some basic data exploration which I keep in this report but don't want to extract to the 
+#' 
 #' 
 #' 
 ## ----plot-data-----------------------------------------------------------
@@ -42,7 +54,17 @@ irisCluster <- kmeans(iris[, 3:4], 3, nstart = 20)
 #' 
 #' 
 #' 
-## ------------------------------------------------------------------------
+## ----results-table-------------------------------------------------------
 table(irisCluster$cluster, iris$Species)
+
+#' 
+#' ### Plot results
+#' 
+## ----results-plot--------------------------------------------------------
+irisCluster$cluster <- as.factor(irisCluster$cluster)
+ggplot(iris, aes(Petal.Length, Petal.Width, 
+                 color = irisCluster$cluster,
+                 shape = Species)) + 
+    geom_point()
 
 #' 
