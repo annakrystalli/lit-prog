@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Literate programming in R</title>
+    <meta charset="utf-8">
+    <meta name="author" content="@annakrystalli @ Sheffield R Users Group" />
+    <meta name="date" content="2017-06-06" />
+    <link href="libs/remark-css-0.0.1/example.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Literate programming in R
+## Tips &amp; Tricks
+### <span class="citation">@annakrystalli</span> @ Sheffield R Users Group
+### 06/06/2017
+
+---
+
+
+
+
+# What's literate programming
+
+
+&gt; ## **Code that is human readable!**
+(ie like literature)
+
+
+---
+
+## Elements of `.Rmd`
+
+- #### `markdown`
+- #### `R` code chunks
+
+![](https://image.slidesharecdn.com/user-mtl-2015-150813011356-lva1-app6892/95/an-introduction-to-knitr-and-r-markdown-31-638.jpg?cb=1439428554)
+
+[Quick Cheat sheet]()
+
+
+---
+
+## Many output formats supported
+
+
+![](http://rmarkdown.rstudio.com/images/RMarkdownOutputFormats.png)
+
+n.b. will focus on `html`. Anything refering to .Rmd also works on notebooks
+
+
+---
+
+
+## Not covering!!
+
+- [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) basics
+
+- [rmarkdowng](http://rmarkdown.rstudio.com/) basics
+
+#### some resources
+
+- [rmarkdown tutorial](https://annakrystalli.github.io/UNAM/rmarkdown.nb.html)
+- [rmarkdown reference guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+---
+
+## **Three different approaches**
+
+- ### Code and documentation in **`.Rmd`**. 
+    - Extract code to `.R` using **`purl()`**.
+- ### Code in **`.R`**, annotations in **`.Rmd`**. 
+    - **`read_chunks("script.R")`** and call in `.Rmd`
+- ### Code + documentation in `.R`.
+    - use [`roxygen2`](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) annotation + **`spin("script.R")`** -&gt; **`.html`**
+
+    
+---
+
+
+
+## You can achieve same results through all approaches!
+#### But different approaches might work better for different types of docs.
+
+- **Vignettes / READMEs**
+
+- **Reports**
+    - progress reports
+    - results reports
+
+- **Functions**
+
+&lt;br&gt;
+
+&gt; ### Dependent on the balance of text vs code vs **how you prefer to work**
+
+---
+
+## `.Rmd` (+ `knitr` -&gt; `html`)
+
+- **Main body** is **`markdown`** (annotations)
+
+- **`R`** in **code chunks**
+
+- I use it for progress reports that do not require reproducibility or results reports to which all variables are supplied as parameters.
+- I might also use it for a vignette and extract the workflow described using `knitr::purl()`
+
+
+### examples
+
+- **Dummy example: example-rmd1.Rmd** [.Rmd](https://raw.githubusercontent.com/annakrystalli/lit-prog/master/Rmd/example-rmd1.Rmd), [html](https://annakrystalli.github.io/lit-prog/Rmd/example-rmd1.html)
+
+- **Example in action**
+    - **[rmacroRDM](https://github.com/annakrystalli/rmacroRDM) vignette:** [.Rmd](https://raw.githubusercontent.com/annakrystalli/rmacroRDM/master/utils/temp_vignette.Rmd), [html](https://rawgit.com/annakrystalli/rmacroRDM/master/temp_vignette.nb.html), `purl`ed [.R](https://github.com/annakrystalli/rmacroRDM/blob/master/utils/temp_vignette.R)
+---
+
+### Using `knitr::purl` (`Rmd` -&gt; `R`)
+
+If your main code base is in an `.Rmd` or you'd like to extract the code from a vignette
+you can use `purl()` to *tangle* code out of a literate programming doc. 
+
+#### **`purl`** takes many of the same arguments as `knit()` of which most important are:
+
+- **`input`:** path to the input `.Rdm` file
+
+- **`output`:** output file path to write to
+
+- **`documentation`:** an integer specifying the level of documentation to go the tangled script: 
+    + **0** means pure code (discard all text chunks)
+    + **1** (default) means add the chunk headers to code
+    + **2** means add all text chunks to code as roxygen comments
+
+---
+
+
+#### examples
+
+
+```r
+file &lt;- "example-rmd1"
+for(docu in 0:2){
+    knitr::purl(input = paste0("Rmd/", file, ".Rmd"), 
+                output = paste0("R/", file, "_", docu,".R"), 
+                documentation = docu)
+}
+```
+
+
+- [**example-rmd1_0.R**](https://github.com/annakrystalli/lit-prog/blob/master/R/example-rmd1_0.R)
+
+- [**example-rmd1_1.R**](https://github.com/annakrystalli/lit-prog/blob/master/R/example-rmd1_1.R)
+
+- [**example-rmd1_2.R**](https://github.com/annakrystalli/lit-prog/blob/master/R/example-rmd1_2.R)
+
+---
+
+## Annotation in `.Rmd` + code in `.R`.
+
+- #### Store and develop your code in an **`.R`** script
+
+- make sure to **name chunks of code** following the convention:
+```
+## ---- code-chunk-name ----
+r.code &lt;- do.summat
+```
+- **read `R` code chunks** into your `.Rmd` document using **`knitr::read_chunks`** (need to load knitr library within the Rmd)
+
+- run chunks by **creating blank `R` chunks** and **naming them** with appropriate chunk names in your `.Rmd`, eg.
+
+![](assets/chunk.png)
+
+---
+
+## example 
+
+- ### [**`example-rmd2.Rmd`**](https://raw.githubusercontent.com/annakrystalli/lit-prog/master/Rmd/example-rmd2.Rmd)
+    - created by **editing `example-rmd1.Rmd`**
+    
+    - read in the **`.R` code from `example-rmd1_1.R`**
+    
+    - called chunks within the `.Rmd`
+    
+    - render to [**`example-rmd2.html`**](https://annakrystalli.github.io/lit-prog/Rmd/example-rmd1.html)
+
+---
+
+## Render with `rmarkdown::render()`
+
+You can render an `.Rmd` externally by calling `markdown::render`
+
+
+```r
+render(input, output_format = NULL, output_file = NULL, output_dir = NULL,
+       output_options = NULL,  params = NULL)
+```
+
+e.g. I rendered this presentation as an **.html** [**handout**](https://annakrystalli.github.io/lit-prog/handout/presentation.html) document into the `handout/` directory:
+
+
+```r
+file &lt;- "presentation"
+render(input = paste0("Rmd/", file, ".Rmd"),
+       html_document(theme = "journal"),
+       output_file = paste0("../handout/", file, ".html"))
+```
+
+
+---
+
+
+## `.R` + `Roxygen2` + [`knirt::spin`](http://deanattali.com/2015/03/24/knitrs-best-hidden-gem-spin/)
+
+Good for when the code is the focus and only minimal annotation required. 
+Not ideal if you want to write extensively
+
+### **principles**
+
+- **input is an `.R`** script rather than a literate programming document.
+
+- **Start lines with:**
+    - **`#'`** to indicate lines to be treated **as `md`** e.g.
+        - `#' ### header` will be a 
+        ### h3 header
+        - `#' some **bold**` text results in some **bold** text.
+    - **`#+`** to indicate lines to be treated **as code chunk options**. 
+    
+- use **`knitr::spin`** instead of `knitr::knit` (the default for .Rmd)
+
+---
+
+### example
+
+&lt;br&gt;
+
+- I edited the `purl` **`.R` code** output **`example-rmd1_2.R`** adding **`#+`** to indicate **code chunk option lines** to create [**`example-3_r2html.R`**](https://github.com/annakrystalli/lit-prog/blob/master/R/example-3_r2html.R)
+
+- I used **`spin()`** to render it to [**`example-3_r2html.html`**](https://annakrystalli.github.io/lit-prog/example-3_r2html.html)
+
+
+```r
+spin("R/example-3_r2html.R")
+```
+
+
+---
+background-image: url(https://github.com/yihui/xaringan/releases/download/v0.0.2/karl-moustache.jpg)
+---
+
+## roxygen2 function documentation
+
+- Use **roxygen2** notation to **document functions.**
+
+- First step to **bulding your** [**own package**](http://kbroman.org/pkg_primer/pages/docs.html). 
+- Makes it easy to **generate required format** to support **help files**
+
+
+[Example](https://github.com/kbroman/pkg_primer/blob/gh-pages/example/stage3/R/plot_crayons.R) by Karl Broman
+
+
+---
+
+## roxygen2 skeleton for functions
+
+In Rstudio, with the cursor in the body of a function, you can insert a roxygen skeleton using **code &gt; Insert Roxygen Skeleton**
+
+![](https://rstudioblog.files.wordpress.com/2015/05/roxygen-skeleton1.png)
+
+---
+## outro: extra info
+
+## repo with materials: https://github.com/annakrystalli/lit-prog
+
+
+### Xaringan
+
+New presentation package: [Xaringan](https://github.com/yihui/xaringan)
+
+### yolo:true in YAML -&gt; suprise Karl Broman face!
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false,
+"highlightLines": true,
+"highlightStyle": "github"
+});
+if (window.HTMLWidgets) slideshow.on('showSlide', function (slide) {setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 100)});</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
