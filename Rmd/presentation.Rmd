@@ -1,7 +1,7 @@
 ---
 title: "Literate programming in R"
 subtitle: "Tips & Tricks"
-author: "Anna Krystalli @ Sheffield R Users Group"
+author: "@annakrystalli   @   Sheffield R Users Group"
 date: "06/06/2017"
 output:
   xaringan::moon_reader:
@@ -23,8 +23,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
----
 
 # What's literate programming
 
@@ -49,28 +47,36 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Many output formats supported
 
-will focus on `html`
 
 ![](http://rmarkdown.rstudio.com/images/RMarkdownOutputFormats.png)
 
+n.b. will focus on `html`. Anything refering to .Rmd also works on notebooks
+
+
 ---
 
 
-## Not covering:
+## Not covering!!
 
-- markdown basics
-- rmarkdowng basics
+- [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) basics
+
+- [rmarkdowng](http://rmarkdown.rstudio.com/) basics
+
+#### some resources
+
+- [rmarkdown tutorial](https://annakrystalli.github.io/UNAM/rmarkdown.nb.html)
+- [rmarkdown reference guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
 
 ---
 
-## Three different approaches
+## **Three different approaches**
 
-- ### Code and documentation in `.Rmd`. 
-    - Extract pure code to `.R` using `purl`
-- ### Code in `.R`, annotations in `.Rmd`. 
-    - `read_chunks()` and call in `.Rmd`
-- ### Code in `.R`.
-    - use [`roxygen2`](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) annotation + `spin()` -> .html
+- ### Code and documentation in **`.Rmd`**. 
+    - Extract code to `.R` using **`purl()`**.
+- ### Code in **`.R`**, annotations in **`.Rmd`**. 
+    - **`read_chunks("script.R")`** and call in `.Rmd`
+- ### Code + documentation in `.R`.
+    - use [`roxygen2`](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) annotation + **`spin("script.R")`** -> **`.html`**
 
     
 ---
@@ -78,24 +84,28 @@ will focus on `html`
 
 
 ## You can achieve same results through all approaches!
-### But different approaches might work different types of docs.
+#### But different approaches might work better for different types of docs.
 
-- Vignettes / READMEs
+- **Vignettes / READMEs**
 
-- Reports
+- **Reports**
     - progress reports
     - results reports
 
-- Functions
+- **Functions**
 
-> Dependent on the balance of text vs code vs how you prefer to work
+<br>
+
+> ### Dependent on the balance of text vs code vs **how you prefer to work**
 
 ---
 
 ## `.Rmd` (+ `knitr` -> `html`)
 
-- Main body is the `markdown` (annotations)
-- `R` in code chunks
+- **Main body** is **`markdown`** (annotations)
+
+- **`R`** in **code chunks**
+
 - I use it for progress reports that do not require reproducibility or results reports to which all variables are supplied as parameters.
 - I might also use it for a vignette and extract the workflow described using `knitr::purl()`
 
@@ -110,10 +120,10 @@ will focus on `html`
 
 ### Using `knitr::purl` (`Rmd` -> `R`)
 
-If your main code base is in an .Rmd or you'd like to extract the code from a vignette
-you can use `purl()` *tangle* code out of a literate programming doc. 
+If your main code base is in an `.Rmd` or you'd like to extract the code from a vignette
+you can use `purl()` to *tangle* code out of a literate programming doc. 
 
-`purl` takes many of the same arguments as `knit()` of which most important are:
+#### **`purl`** takes many of the same arguments as `knit()` of which most important are:
 
 - **`input`:** path to the input `.Rdm` file
 
@@ -149,14 +159,16 @@ for(docu in 0:2){
 
 ## Annotation in `.Rmd` + code in `.R`.
 
-- Store and develop your code in an `.R` script
-- make sure to **name chunks of code** with the convention:
+- #### Store and develop your code in an **`.R`** script
+
+- make sure to **name chunks of code** following the convention:
 ```
 ## ---- code-chunk-name ----
 r.code <- do.summat
 ```
-- read `R` code chunks into your `.Rmd` document using `knitr::read_chunks` (need to load knitr library within the Rmd)
-- run chunks by creating blank `R` chunks and naming them with appropriate chunk names in your `.Rmd`, eg.
+- **read `R` code chunks** into your `.Rmd` document using **`knitr::read_chunks`** (need to load knitr library within the Rmd)
+
+- run chunks by **creating blank `R` chunks** and **naming them** with appropriate chunk names in your `.Rmd`, eg.
 
 ![](assets/chunk.png)
 
@@ -165,9 +177,12 @@ r.code <- do.summat
 ## example 
 
 - ### [**`example-rmd2.Rmd`**](https://raw.githubusercontent.com/annakrystalli/lit-prog/master/Rmd/example-rmd2.Rmd)
-    - edited the markdown annotation from `example-rmd1.Rmd`
-    - read the `.R` code from `example-rmd1_1.R`
-    - call the chunks within the `.Rmd`
+    - created by **editing `example-rmd1.Rmd`**
+    
+    - read in the **`.R` code from `example-rmd1_1.R`**
+    
+    - called chunks within the `.Rmd`
+    
     - render to [**`example-rmd2.html`**](https://annakrystalli.github.io/lit-prog/Rmd/example-rmd1.html)
 
 ---
@@ -182,7 +197,7 @@ render(input, output_format = NULL, output_file = NULL, output_dir = NULL,
        output_options = NULL,  params = NULL)
 ```
 
-e.g. I rendered this presentation into an .html document as a handout into the `handout/` directory:
+e.g. I rendered this presentation as an **.html** [**handout**](https://annakrystalli.github.io/lit-prog/handout/presentation.html) document into the `handout/` directory:
 
 ```{r, eval=FALSE}
 file <- "presentation"
@@ -200,28 +215,42 @@ render(input = paste0("Rmd/", file, ".Rmd"),
 Good for when the code is the focus and only minimal annotation required. 
 Not ideal if you want to write extensively
 
-### principles
+### **principles**
 
-- input is `.R` script rather than a literate programming document
-- indicate lines to be treated as `md` using `#'`
-    - `#' # title` will be a header
-    - `#' some **bold**` text results in some bold text
-- indicate lines to be treated as code chunk options using `#+`
-- use `knitr::spin` instead of `knitr::knit` (the default for .Rmd)
+- **input is an `.R`** script rather than a literate programming document.
+
+- **Start lines with:**
+    - **`#'`** to indicate lines to be treated **as `md`** e.g.
+        - `#' ### header` will be a 
+        ### h3 header
+        - `#' some **bold**` text results in some **bold** text.
+    - **`#+`** to indicate lines to be treated **as code chunk options**. 
+    
+- use **`knitr::spin`** instead of `knitr::knit` (the default for .Rmd)
+
 ---
 
-### examples
+### example
 
- 
+<br>
+
+- I edited the `purl` **`.R` code** output **`example-rmd1_2.R`** adding **`#+`** to indicate **code chunk option lines** to create [**`example-3_r2html.R`**](https://github.com/annakrystalli/lit-prog/blob/master/R/example-3_r2html.R)
+
+- I used **`spin()`** to render it to [**`example-3_r2html.html`**](https://annakrystalli.github.io/lit-prog/example-3_r2html.html)
+
+```{r, eval=FALSE}
+spin("R/example-3_r2html.R")
+```
 
 
 ---
 
 ## roxygen2 function documentation
 
-- Use roxygen2 notation to document functions.
-- First step to bulding your [own package](http://kbroman.org/pkg_primer/pages/docs.html). 
-- Makes it easy to generate required file format to support help files
+- Use **roxygen2** notation to **document functions.**
+
+- First step to **bulding your** [**own package**](http://kbroman.org/pkg_primer/pages/docs.html). 
+- Makes it easy to **generate required format** to support **help files**
 
 
 [Example](https://github.com/kbroman/pkg_primer/blob/gh-pages/example/stage3/R/plot_crayons.R) by Karl Broman
@@ -229,7 +258,7 @@ Not ideal if you want to write extensively
 
 ---
 
-## Roxygen2 skeleton for functions
+## roxygen2 skeleton for functions
 
 In Rstudio, with the cursor in the body of a function, you can insert a roxygen skeleton using **code > Insert Roxygen Skeleton**
 

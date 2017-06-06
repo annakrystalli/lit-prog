@@ -1,6 +1,6 @@
 library(datasets)
 library(ggplot2)
-library(knitr)
+
 ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
 
 set.seed(20)
