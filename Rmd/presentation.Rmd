@@ -47,16 +47,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ---
 
+## Many output formats supported
 
-## Three different approaches
+will focus on `html`
 
-- Code and documentation in `.Rmd`. 
-    - Extract pure code to `.R` using curl
-- Code in `.R`, read_chunks() and call chunks in .Rmd
+![](http://rmarkdown.rstudio.com/images/RMarkdownOutputFormats.png)
 
-- Code in `.R`, use [`roxygen2`](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) annotation + [`spin()`] -> .html
-
-    
 ---
 
 
@@ -66,6 +62,20 @@ knitr::opts_chunk$set(echo = TRUE)
 - rmarkdowng basics
 
 ---
+
+## Three different approaches
+
+- ### Code and documentation in `.Rmd`. 
+    - Extract pure code to `.R` using `purl`
+- ### Code in `.R`, annotations in `.Rmd`. 
+    - `read_chunks()` and call in `.Rmd`
+- ### Code in `.R`.
+    - use [`roxygen2`](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) annotation + `spin()` -> .html
+
+    
+---
+
+
 
 ## You can achieve same results through all approaches!
 ### But different approaches might work different types of docs.
@@ -154,12 +164,15 @@ r.code <- do.summat
 
 ## example 
 
-- ### **`example-rmd2.Rmd`**
+- ### [**`example-rmd2.Rmd`**](https://raw.githubusercontent.com/annakrystalli/lit-prog/master/Rmd/example-rmd2.Rmd)
     - edited the markdown annotation from `example-rmd1.Rmd`
     - read the `.R` code from `example-rmd1_1.R`
+    - call the chunks within the `.Rmd`
+    - render to [**`example-rmd2.html`**](https://annakrystalli.github.io/lit-prog/Rmd/example-rmd1.html)
 
+---
 
-## Render with rmarkdown::render()
+## Render with `rmarkdown::render()`
 
 You can render an `.Rmd` externally by calling `markdown::render`
 
@@ -182,7 +195,7 @@ render(input = paste0("Rmd/", file, ".Rmd"),
 ---
 
 
-## `.R` + `Roxygen2` + `knirt::spin`
+## `.R` + `Roxygen2` + [`knirt::spin`](http://deanattali.com/2015/03/24/knitrs-best-hidden-gem-spin/)
 
 Good for when the code is the focus and only minimal annotation required. 
 Not ideal if you want to write extensively
@@ -191,8 +204,8 @@ Not ideal if you want to write extensively
 
 - input is `.R` script rather than a literate programming document
 - indicate lines to be treated as `md` using `#'`
-    - #' # title will be a header
-    - #' some **bold** text results in some bold text
+    - `#' # title` will be a header
+    - `#' some **bold**` text results in some bold text
 - indicate lines to be treated as code chunk options using `#+`
 - use `knitr::spin` instead of `knitr::knit` (the default for .Rmd)
 ---
@@ -206,10 +219,8 @@ Not ideal if you want to write extensively
 
 ## roxygen2 function documentation
 
-http://kbroman.org/pkg_primer/pages/docs.html
-
-- Use roxygen2 notation to document functions
-- First step to bulding your own package. 
+- Use roxygen2 notation to document functions.
+- First step to bulding your [own package](http://kbroman.org/pkg_primer/pages/docs.html). 
 - Makes it easy to generate required file format to support help files
 
 
@@ -225,9 +236,13 @@ In Rstudio, with the cursor in the body of a function, you can insert a roxygen 
 ![](https://rstudioblog.files.wordpress.com/2015/05/roxygen-skeleton1.png)
 
 ---
+## outro: extra info
 
-## Xaringer
+## repo with materials: https://github.com/annakrystalli/lit-prog
 
-New presentation package: Xaringer
 
-yolo:true in YAML
+### Xaringan
+
+New presentation package: [Xaringan](https://github.com/yihui/xaringan)
+
+### yolo:true in YAML -> suprise Karl Broman face!
