@@ -1,14 +1,14 @@
 ---
-title: "example-rmd1"
+title: "example-rmd2"
 author: "Anna Krystalli"
-date: "06/06/2017"
+date: "Last rendered: `r format(Sys.time(), '%d %b %Y %H:%M:%S')`"
 output: html_document
 ---
-# All-in-one `.Rdm` example
+# Annotation in `.Rdm` and code in `.R` example.
 
 In this example I keep all the annotation in this `.Rmd` document but I will source all the workflow code from the `example-rmd1_1.R` script I extracted from `example-rmd1.Rmd`. I'm using `example-rmd1_1.R` because we extracted a level of documentation that included the chunk names.
 
-#### The difference from the previous approach is that I need to **READ THE R CHUNKS** using `read_chunk()` from the `.R` script and then effectively call them in my `.Rmd`
+#### The difference from the previous approach is that I need to **READ THE R CHUNKS** using `read_chunk()` from the `.R` script and then effectively call them in my [`.Rmd`]()
 
 ```{r rmd-setup, include=FALSE, purl=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
